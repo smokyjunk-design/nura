@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>NURA</title>
+  <style>
+    :root{--bg:#0a0a0c;--card:#16161a;--line:#2a2a30;--text:#f4f2ef;--mute:#9a9690;--coral:#ff6a3d;--ok:#8dffb0;--bad:#ff7b7b}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;padding:20px 16px 48px;max-width:560px;margin:0 auto}
+    h1{font-size:22px;margin:8px 0 6px}
+    p{color:var(--mute);line-height:1.45;font-size:14px}
+    .row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    button{border:0;border-radius:999px;padding:11px 14px;font-weight:700;cursor:pointer}
+    .solid{background:var(--coral);color:#1a0b06}
+    .ghost{background:#16161a;color:#ddd;border:1px solid var(--line)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:12px}
+    img{width:100%;border-radius:12px;background:#111;min-height:180px;object-fit:cover;display:block}
+    #status{font-size:13px;margin-top:10px;white-space:pre-wrap;word-break:break-word}
+    .ok{color:var(--ok)} .bad{color:var(--bad)} .wait{color:#ffd18a}
+    code{font-size:11px;color:#cfc8c0}
+  </style>
+</head>
+<body>
+  <p>NURA</p>
+  <h1>Studio smoke test</h1>
+  <p>This is the live root. Tap Run live Flux (15–60s). Full studio HTML is in artifacts/nura/index.html until that file is pushed.</p>
+  <div class="row">
+    <button class="solid" id="live">Run live Flux</button>
+    <button class="ghost" onclick="location.href='test.html'">test.html</button>
+  </div>
+  <div class="card">
+    <img id="out" alt="test output" />
+    <p id="status" class="wait">Ready. Tap Run live Flux.</p>
+  </div>
+  <p style="margin-top:14px"><code id="url"></code></p>
+<script>
+const PROMPT = "photoreal white ceramic cup on light oak table, window light, no people, no text";
+function url(){
+  const qs = new URLSearchParams({model:"flux", width:"512", height:"640", seed:"7", nologo:"true", safe:"true", private:"true"});
+  return "https://image.pollinations.ai/prompt/" + encodeURIComponent(PROMPT) + "?" + qs.toString();
+}
+const out = document.getElementById("out");
+const status = document.getElementById("status");
+const urlEl = document.getElementById("url");
+function set(cls, msg){ status.className = cls; status.textContent = msg; }
+document.getElementById("live").onclick = ()=>{
+  const u = url() + "&ts=" + Date.now();
+  urlEl.textContent = u;
+  set("wait", "RUNNING · image.pollinations.ai … 15–60s");
+  const started = Date.now();
+  const img = new Image();
+  const t = setTimeout(()=>{ img.src=""; set("bad", "FAIL · timeout 90s."); }, 90000);
+  img.onload = ()=>{ clearTimeout(t); out.src = u; set("ok", "PASS · live Flux in "+((Date.now()-started)/1000).toFixed(1)+"s\n"+img.naturalWidth+"×"+img.naturalHeight); };
+  img.onerror = ()=>{ clearTimeout(t); set("bad", "FAIL · 429 or provider error. Wait 30s."); };
+  img.src = u;
+};
+</script>
+</body>
+</html>
