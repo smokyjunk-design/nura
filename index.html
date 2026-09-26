@@ -3,58 +3,196 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>NURA</title>
-  <style>
-    :root{--bg:#0a0a0c;--card:#16161a;--line:#2a2a30;--text:#f4f2ef;--mute:#9a9690;--coral:#ff6a3d;--ok:#8dffb0;--bad:#ff7b7b}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;padding:20px 16px 48px;max-width:560px;margin:0 auto}
-    h1{font-size:22px;margin:8px 0 6px}
-    p{color:var(--mute);line-height:1.45;font-size:14px}
-    .row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-    button{border:0;border-radius:999px;padding:11px 14px;font-weight:700;cursor:pointer}
-    .solid{background:var(--coral);color:#1a0b06}
-    .ghost{background:#16161a;color:#ddd;border:1px solid var(--line)}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:12px}
-    img{width:100%;border-radius:12px;background:#111;min-height:180px;object-fit:cover;display:block}
-    #status{font-size:13px;margin-top:10px;white-space:pre-wrap;word-break:break-word}
-    .ok{color:var(--ok)} .bad{color:var(--bad)} .wait{color:#ffd18a}
-    code{font-size:11px;color:#cfc8c0}
-  </style>
+  <meta name="theme-color" content="#0a0a0c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>NURA · One face. Every campaign.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="nura.css" />
 </head>
 <body>
-  <p>NURA</p>
-  <h1>Studio smoke test</h1>
-  <p>This is the live root. Tap Run live Flux (15–60s). Full studio HTML is in artifacts/nura/index.html until that file is pushed.</p>
-  <div class="row">
-    <button class="solid" id="live">Run live Flux</button>
-    <button class="ghost" onclick="location.href='test.html'">test.html</button>
+  <div class="banner">Live generations via Pollinations (Flux). Face lock is a written identity card + fixed seed — not a trained LoRA. Video needs a key from enter.pollinations.ai. <button onclick="go('settings')">API key</button> · <a href="test.html" style="color:#ffd0c0;font-weight:700">Smoke test</a></div>
+  <nav class="top">
+    <button class="logo" onclick="go('landing')"><span class="mark"></span> NURA</button>
+    <div class="navlinks">
+      <button data-nav="studio" onclick="go('studio')">Studio</button>
+      <button data-nav="usecases" onclick="go('usecases')">Use cases</button>
+      <button data-nav="pricing" onclick="go('pricing')">Pricing</button>
+    </div>
+    <div class="row">
+      <span class="credits" id="creditPill">5 cr</span>
+      <button class="ghost" onclick="go('pricing')">Plans</button>
+      <button class="solid" onclick="startCreate()">Create</button>
+    </div>
+  </nav>
+
+  <section id="landing" class="page on gridbg">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">✦ Now with 3–10s motion clips and native-sound beds</div>
+        <h1>One face.<br>Every <em>campaign.</em></h1>
+        <p class="lead">Upload 3 to 10 photos and lock an influencer who wears any outfit, holds your product, and shows up in photoreal stills and short clips.</p>
+        <div class="row">
+          <button class="solid" onclick="startCreate()">Create your influencer →</button>
+          <button class="ghost" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">See how it works</button>
+        </div>
+        <div class="checks"><span><b>✓</b>5 free credits</span><span><b>✓</b>No watermarks</span><span><b>✓</b>Cancel anytime</span></div>
+      </div>
+      <div class="stage">
+        <div class="float f1"><img src="" alt="Street look" data-demo="street"></div>
+        <div class="phone">
+          <div class="badge">TALKING · 720P</div>
+          <img src="" alt="Talking still" data-demo="talk">
+        </div>
+        <div class="float f2"><img src="" alt="Beauty look" data-demo="beauty"></div>
+      </div>
+    </div>
+    <div class="rail">
+      <h3>MADE WITH NURA · ONE MODEL, EVERY NICHE</h3>
+      <div class="strip" id="strip"></div>
+    </div>
+    <div class="wrap" id="how">
+      <p class="muted">What you get</p>
+      <h2 class="sec-title">A creator that never needs a shoot.</h2>
+      <div class="feats">
+        <article class="feat"><small>01</small><h3>The same face, every time</h3><p class="muted">Face crops from your reference set guide every generation so the talent stays recognizable across headshots, campaigns, and casual posts.</p></article>
+        <article class="feat"><small>02</small><h3>Video with sound</h3><p class="muted">Image → Video animates a still you already like. Text → Video builds the still first, then the clip.</p></article>
+        <article class="feat"><small>03</small><h3>Cut for social</h3><p class="muted">9:16 stories/shorts, 1:1 feeds, 16:9 ads, plus 2:3 and 3:2.</p></article>
+        <article class="feat"><small>04</small><h3>Three quality tiers</h3><p class="muted">Low 5 cr · Medium 22 cr · High 80 cr.</p></article>
+        <article class="feat"><small>05</small><h3>Edit without a reshoot</h3><p class="muted">Change outfit, product, or background. Face lock stays.</p></article>
+        <article class="feat"><small>06</small><h3>Consent first</h3><p class="muted">Yourself, or adults with written permission. No minors.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="create" class="page">
+    <div class="appbar">
+      <button class="ghost" onclick="go('landing')">← Back</button>
+      <strong>Create influencer</strong>
+      <span class="muted" id="createStep">1 / 2</span>
+    </div>
+    <div class="form">
+      <h2 class="sec-title">Lock one face.</h2>
+      <p class="muted">3 to 10 photos of one adult. Front, 3/4, and one full-body if you have it.</p>
+      <label>NAME</label>
+      <input id="infName" type="text" maxlength="40" placeholder="Mira Vale" />
+      <label>NICHE</label>
+      <div class="modes" id="niches"></div>
+      <label>APPEARANCE LOCK</label>
+      <textarea id="appearance" placeholder="Adult, late 20s, olive-warm skin, dark wavy hair, hazel eyes. Write what must stay identical."></textarea>
+      <label>REFERENCE PHOTOS</label>
+      <div class="uploads" id="slots"></div>
+      <p class="note" id="uploadCount">0 / 10 · need 3 to build</p>
+      <label class="consent"><input id="consent" type="checkbox" /> I confirm these photos are of me, or of an adult who gave written permission. I will not upload minors.</label>
+      <p class="warn hide" id="createErr"></p>
+      <div class="row" style="margin-top:18px">
+        <button class="solid" onclick="buildInfluencer()">Build influencer →</button>
+        <button class="ghost" onclick="useDemo()">Use demo face (Mira)</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="studio" class="page">
+    <div class="appbar">
+      <button class="ghost" onclick="go('landing')">← Home</button>
+      <strong id="studioTitle">Studio</strong>
+      <button class="soft" onclick="go('library')">Library</button>
+    </div>
+    <div class="studio">
+      <aside class="side">
+        <img class="face" id="faceImg" src="" alt="Face lock" />
+        <div style="margin-top:8px"><b id="faceName">Mira Vale</b><div class="muted" id="faceMeta" style="font-size:12px">Lifestyle</div></div>
+        <div class="refs" id="faceRefs"></div>
+        <label>MODE</label>
+        <div class="modes" id="modes"></div>
+        <label>ASPECT</label>
+        <div class="modes" id="ratios"></div>
+        <label>QUALITY</label>
+        <div class="modes" id="qualities"></div>
+        <div id="videoOpts" class="hide">
+          <label>CLIP LENGTH</label>
+          <div class="modes" id="durations"></div>
+        </div>
+        <p class="note" id="lockNote"></p>
+      </aside>
+      <div class="panel">
+        <div style="padding:12px 12px 0">
+          <label id="promptLabel">SCENE</label>
+          <textarea id="prompt" placeholder="Wearing a camel trench on a stone terrace at dusk"></textarea>
+          <div class="genbar">
+            <button class="solid" id="genBtn" onclick="generate()">Generate · 5 cr</button>
+            <button class="ghost" onclick="surprise()">Surprise</button>
+          </div>
+          <div class="cost" id="costLine">Low image · 5 credits · 9:16</div>
+        </div>
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="library" class="page">
+    <div class="appbar">
+      <button class="ghost" onclick="go('studio')">← Studio</button>
+      <strong>Library</strong>
+      <button class="soft" onclick="clearLibrary()">Clear demo jobs</button>
+    </div>
+    <div class="gallery" id="libGallery" style="padding:16px"></div>
+  </section>
+
+  <section id="pricing" class="page">
+    <div class="wrap">
+      <p class="muted">Credits</p>
+      <h2 class="sec-title">Drafts stay cheap. Hero shots cost detail.</h2>
+      <div class="plans">
+        <div class="plan"><b>Starter</b><div class="price">Free</div><p class="muted">5 credits on first open.</p><button class="ghost" style="margin-top:12px" onclick="go('create')">Start free</button></div>
+        <div class="plan"><b>Creator</b><div class="price">$9.99<span style="font-size:14px;font-weight:600">/mo</span></div><p class="muted">1,200 demo credits.</p><button class="solid" style="margin-top:12px" onclick="grantCredits(1200,'Creator')">Add 1,200 demo cr</button></div>
+        <div class="plan best"><b>Pro</b><div class="price">$29.99<span style="font-size:14px;font-weight:600">/mo</span></div><p class="muted">4,000 demo credits.</p><button class="solid" style="margin-top:12px" onclick="grantCredits(4000,'Pro')">Add 4,000 demo cr</button></div>
+      </div>
+      <div class="faq" style="margin-top:24px">
+        <details open><summary>What model runs?</summary><p class="muted" style="margin-top:8px">Stills: image.pollinations.ai (Flux). Video: gen.pollinations.ai/video (Seedance 2.0 Mini).</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="usecases" class="page">
+    <div class="wrap">
+      <h2 class="sec-title">One model, every niche.</h2>
+      <div class="feats" id="useGrid"></div>
+    </div>
+  </section>
+
+  <section id="settings" class="page">
+    <div class="appbar">
+      <button class="ghost" onclick="go('studio')">← Studio</button>
+      <strong>Provider</strong>
+      <span></span>
+    </div>
+    <div class="form">
+      <h2 class="sec-title">Generation backend</h2>
+      <p class="muted">Images work with no key. Video uses GET /video/{prompt} and needs a Pollinations key.</p>
+      <label>POLLINATIONS API KEY</label>
+      <input id="apiKey" type="text" autocomplete="off" placeholder="optional · pk_..." />
+      <label>IMAGE MODEL</label>
+      <input id="imgModel" type="text" value="flux" />
+      <div class="row" style="margin-top:16px">
+        <button class="solid" onclick="saveSettings()">Save</button>
+        <button class="ghost" onclick="testProvider()">Test still</button>
+      </div>
+      <p class="note" id="settingsMsg"></p>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lb" onclick="if(event.target===this) closeLb()">
+    <img id="lbImg" alt="Preview" />
+    <p class="cap" id="lbCap" style="margin-top:10px"></p>
+    <div class="row" style="margin-top:12px">
+      <button class="solid" onclick="downloadCurrent()">Download</button>
+      <button class="ghost" onclick="animateCurrent()">Image → Video</button>
+      <button class="ghost" onclick="editCurrent()">Edit</button>
+      <button class="ghost" onclick="closeLb()">Close</button>
+    </div>
   </div>
-  <div class="card">
-    <img id="out" alt="test output" />
-    <p id="status" class="wait">Ready. Tap Run live Flux.</p>
-  </div>
-  <p style="margin-top:14px"><code id="url"></code></p>
-<script>
-const PROMPT = "photoreal white ceramic cup on light oak table, window light, no people, no text";
-function url(){
-  const qs = new URLSearchParams({model:"flux", width:"512", height:"640", seed:"7", nologo:"true", safe:"true", private:"true"});
-  return "https://image.pollinations.ai/prompt/" + encodeURIComponent(PROMPT) + "?" + qs.toString();
-}
-const out = document.getElementById("out");
-const status = document.getElementById("status");
-const urlEl = document.getElementById("url");
-function set(cls, msg){ status.className = cls; status.textContent = msg; }
-document.getElementById("live").onclick = ()=>{
-  const u = url() + "&ts=" + Date.now();
-  urlEl.textContent = u;
-  set("wait", "RUNNING · image.pollinations.ai … 15–60s");
-  const started = Date.now();
-  const img = new Image();
-  const t = setTimeout(()=>{ img.src=""; set("bad", "FAIL · timeout 90s."); }, 90000);
-  img.onload = ()=>{ clearTimeout(t); out.src = u; set("ok", "PASS · live Flux in "+((Date.now()-started)/1000).toFixed(1)+"s\n"+img.naturalWidth+"×"+img.naturalHeight); };
-  img.onerror = ()=>{ clearTimeout(t); set("bad", "FAIL · 429 or provider error. Wait 30s."); };
-  img.src = u;
-};
-</script>
+  <div class="toast" id="toast"></div>
+  <script src="nura.js"></script>
 </body>
 </html>
